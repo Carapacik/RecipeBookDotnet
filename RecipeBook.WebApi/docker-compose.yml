@@ -1,0 +1,17 @@
+﻿version: "3.9"
+services:
+  recipe-book-api:
+    container_name: recipe-book-api
+    build:
+      context: ..
+      dockerfile: ./RecipeBook.WebApi/Dockerfile
+    depends_on: [ recipe-book-pg ]
+    ports:
+      - "8080:80"
+  recipe-book-pg:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
