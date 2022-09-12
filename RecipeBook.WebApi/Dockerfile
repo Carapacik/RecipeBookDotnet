@@ -5,6 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ["RecipeBook.Domain/RecipeBook.Domain.csproj", "RecipeBook.Domain/"]
+COPY ["RecipeBook.Infrastructure/RecipeBook.Infrastructure.csproj", "RecipeBook.Infrastructure/"]
+COPY ["RecipeBook.Application/RecipeBook.Application.csproj", "RecipeBook.Application/"]
+COPY ["RecipeBook.Migrations/RecipeBook.Migrations.csproj", "RecipeBook.Migrations/"]
 COPY ["RecipeBook.WebApi/RecipeBook.WebApi.csproj", "RecipeBook.WebApi/"]
 RUN dotnet restore "RecipeBook.WebApi/RecipeBook.WebApi.csproj"
 COPY . .
