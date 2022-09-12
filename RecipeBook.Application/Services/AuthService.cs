@@ -16,8 +16,10 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
 
-    public AuthService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration,
-        IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public AuthService(IHttpContextAccessor httpContextAccessor,
+        IConfiguration configuration,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
@@ -41,7 +43,7 @@ public class AuthService : IAuthService
     public async Task<string> Register(RegisterUserCommand registerUserCommand)
     {
         var user = await _userRepository.GetByEmail(registerUserCommand.Email);
-        if (user == null) throw new Exception("User already exist.");
+        if (user != null) throw new Exception("User already exist.");
 
         PasswordExtension.CreatePasswordHash(registerUserCommand.Password, out var passwordHash, out var passwordSalt);
         await _userRepository.CreateUser(new User
@@ -49,7 +51,9 @@ public class AuthService : IAuthService
             Name = registerUserCommand.Name,
             Email = registerUserCommand.Email,
             PasswordHash = passwordHash,
-            PasswordSalt = passwordSalt
+            PasswordSalt = passwordSalt,
+            Description = "",
+            CreationDate = DateTime.Now
         });
 
         await _unitOfWork.Commit();
@@ -62,7 +66,7 @@ public class AuthService : IAuthService
     public async Task ValidateUser()
     {
         var isAuthenticatedUser = !_httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated;
-        if (!isAuthenticatedUser ?? true) throw new Exception("Invalid user.");
+        if (isAuthenticatedUser ?? true) throw new Exception("Invalid user.");
 
         var claimsEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
         if (claimsEmail == null) throw new Exception("Invalid user.");

@@ -25,7 +25,7 @@ builder.Services.AddDbContext<RecipeBookDbContext>(options => options.UseNpgsql(
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("OAuth2", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Description = "Standard Authorization header using the Bearer scheme",
         In = ParameterLocation.Header,
@@ -63,6 +63,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("FlutterOrigins");
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 

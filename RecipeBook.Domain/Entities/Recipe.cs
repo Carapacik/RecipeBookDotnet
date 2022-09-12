@@ -12,7 +12,7 @@ public class Recipe
     public int FavoritesCount { get; set; }
     public DateTime CreationDateTime { get; set; }
     public int UserId { get; set; }
-    public List<Tag> Tags { get; set; }
-    public List<Step> Steps { get; set; }
-    public List<Ingredient> Ingredients { get; set; }
+    public ICollection<Tag> Tags { get; set; }
+    public ICollection<Step> Steps { get; set; }
+    public ICollection<Ingredient> Ingredients { get; set; }
 }

@@ -10,4 +10,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\RecipeBook.Infrastructure\RecipeBook.Infrastructure.csproj"/>
+    </ItemGroup>
+
 </Project>

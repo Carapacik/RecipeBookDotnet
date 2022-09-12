@@ -16,8 +16,7 @@ internal static class PasswordExtension
             new(ClaimTypes.Role, "Admin")
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey
-        ));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         var credits = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
