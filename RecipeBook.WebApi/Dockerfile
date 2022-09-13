@@ -21,5 +21,4 @@ RUN dotnet publish "RecipeBook.WebApi.csproj" -c Release -o /app/publish /p:UseA
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV FILE_STORAGE="D:\recipebook-static"
 ENTRYPOINT ["dotnet", "RecipeBook.WebApi.dll"]
