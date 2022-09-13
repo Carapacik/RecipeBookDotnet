@@ -61,10 +61,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("FlutterOrigins");
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<RecipeBookDbContext>();
+    context.Database.Migrate();
+}
 
 app.Run();
