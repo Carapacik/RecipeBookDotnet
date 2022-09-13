@@ -54,11 +54,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("FlutterOrigins");
 app.UseAuthentication();
@@ -70,7 +67,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<RecipeBookDbContext>();
-    context.Database.Migrate();
+    if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
 }
 
 app.Run();

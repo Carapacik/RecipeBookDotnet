@@ -12,7 +12,7 @@ using RecipeBook.Infrastructure;
 namespace RecipeBook.Migrations.Migrations
 {
     [DbContext(typeof(RecipeBookDbContext))]
-    [Migration("20220912111421_Init")]
+    [Migration("20220913104837_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
