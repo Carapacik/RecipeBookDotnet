@@ -15,10 +15,12 @@ services:
     build:
       context: ..
       dockerfile: ./RecipeBookDotnet/RecipeBook.WebApi/Dockerfile
-    depends_on: [ recipe-book-pg ]
+    depends_on:
+      - recipe-book-pg
     networks:
       - recipe-book-connection
     ports:
       - "8080:80"
+    command: ["dotnet", "ef", "database update"]
 networks:
   recipe-book-connection:

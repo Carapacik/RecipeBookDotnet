@@ -53,6 +53,8 @@ public class RecipeService : IRecipeService
     public async Task<int> AddRecipe(RecipeCommand command)
     {
         var filePath = await _fileStorageService.SaveFile(command.StorageFile, "images");
+        if (filePath == null)
+            throw new Exception("File in request not found.");
         var user = await _userRepository.GetByEmail(command.Email);
         if (user == null)
             throw new Exception("User not found.");
@@ -96,7 +98,7 @@ public class RecipeService : IRecipeService
         if (filePath != null)
             await _fileStorageService.RemoveFile("images", existingRecipe.ImageUrl);
 
-        var editedRecipe = ConvertToRecipe(editCommand, filePath, user.UserId);
+        var editedRecipe = ConvertToRecipe(editCommand, filePath!, user.UserId);
 
         await _recipeRepository.Edit(existingRecipe, editedRecipe);
         await _unitOfWork.Commit();

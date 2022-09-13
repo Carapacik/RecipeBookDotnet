@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
 using RecipeBook.WebApi.Adapters;
@@ -51,9 +50,9 @@ public class RecipeController : ControllerBase
 
     [HttpPost]
     [DisableRequestSizeLimit]
-    public async Task<IActionResult> AddRecipe()
+    public async Task<IActionResult> AddRecipe([FromForm] CreateRecipeDto recipeDto, [FromForm] IFormFile file)
     {
-        await _recipeService.AddRecipe(await ParseRecipeCommand(Request.Form));
+        await _recipeService.AddRecipe(await ParseRecipeCommand(recipeDto, file));
         return Ok();
     }
 
@@ -66,9 +65,9 @@ public class RecipeController : ControllerBase
 
     [HttpPatch("{id:int}/edit")]
     [DisableRequestSizeLimit]
-    public async Task<IActionResult> EditRecipe(int id, IFormCollection form)
+    public async Task<IActionResult> EditRecipe([FromForm] CreateRecipeDto recipeDto, [FromForm] IFormFile file, int id)
     {
-        await _recipeService.EditRecipe(await ParseRecipeCommand(Request.Form, id));
+        await _recipeService.EditRecipe(await ParseRecipeCommand(recipeDto, file, id));
         return Ok();
     }
 
@@ -88,15 +87,9 @@ public class RecipeController : ControllerBase
         return await _recipeBuilder.BuildRecipeDetail(recipe);
     }
 
-    private async Task<RecipeCommand> ParseRecipeCommand(IFormCollection formCollection, int id = 0)
+    private async Task<RecipeCommand> ParseRecipeCommand(CreateRecipeDto recipeData, IFormFile? formFile, int id = 0)
     {
-        var recipeData = JsonConvert.DeserializeObject<CreateRecipeDto>(formCollection["data"]);
-        if (recipeData == null) throw new ArgumentException("Data is null");
-
         recipeData.RecipeId = id;
-        IFormFile? formFile = null;
-        if (formCollection.Files.Count > 0) formFile = formCollection.Files[0];
-
         return recipeData.FromDto(await FormFileAdapter.Create(formFile),
             HttpContext.User.FindFirstValue(ClaimTypes.Email));
     }

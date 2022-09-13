@@ -27,8 +27,9 @@ public class FileStorageService : IFileStorageService
         return Task.CompletedTask;
     }
 
-    public async Task<SaveFileResultCommand> SaveFile(FileResultCommand file, string path)
+    public async Task<SaveFileResultCommand?> SaveFile(FileResultCommand? file, string path)
     {
+        if (file == null) return null;
         var fileName = $"{Guid.NewGuid().ToString()}.{file.Extension}";
         var newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
         await File.WriteAllBytesAsync(newFilePath, file.Content);

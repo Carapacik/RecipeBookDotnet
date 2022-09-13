@@ -11,7 +11,15 @@ using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton(builder.Configuration.GetSection("FileStorageSettings").Get<FileStorageSettings>());
+
+builder.Configuration.AddEnvironmentVariables("FILE_STORAGE");
+var fileStorageEnv = Environment.GetEnvironmentVariable("FILE_STORAGE");
+if (fileStorageEnv == null)
+    builder.Services.AddSingleton(builder.Configuration.GetSection("FileStorageSettings").Get<FileStorageSettings>());
+else
+    builder.Services.AddSingleton(builder.Configuration.Get<FileStorageSettings>().BasePath = fileStorageEnv);
+
+
 builder.Services.AddDependencies();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
@@ -62,12 +70,5 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<RecipeBookDbContext>();
-    if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
-}
 
 app.Run();
