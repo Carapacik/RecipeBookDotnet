@@ -4,7 +4,7 @@
 
 In **docker-compose.yml** change default value of `FILE_STORAGE` for file strorage.
 
-Run `docker-compose up force-recreate`
+Run `docker-compose up`
 
 ## Run with IDE
 
