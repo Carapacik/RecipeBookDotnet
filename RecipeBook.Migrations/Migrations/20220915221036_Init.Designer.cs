@@ -12,14 +12,14 @@ using RecipeBook.Infrastructure;
 namespace RecipeBook.Migrations.Migrations
 {
     [DbContext(typeof(RecipeBookDbContext))]
-    [Migration("20220913104837_Init")]
+    [Migration("20220915221036_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
