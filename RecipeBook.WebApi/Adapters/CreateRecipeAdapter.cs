@@ -6,8 +6,9 @@ namespace RecipeBook.WebApi.Adapters;
 
 public static class CreateRecipeAdapter
 {
-    public static RecipeCommand FromDto(this CreateRecipeDto recipe, FormFileAdapter? fileAdapter, string email)
+    public static async Task<RecipeCommand> FromDtoAsync(this CreateRecipeDto recipe, string email)
     {
+        var fileAdapter = await FormFileAdapter.Create(recipe.RecipeImage);
         return new RecipeCommand(recipe.RecipeId,
             recipe.Title,
             recipe.Description,

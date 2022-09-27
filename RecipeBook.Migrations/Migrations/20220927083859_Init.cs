@@ -18,7 +18,7 @@ namespace RecipeBook.Migrations.Migrations
                     RecipeId = table.Column<int>(type: "integer", nullable: false),
                     InFavorite = table.Column<bool>(type: "boolean", nullable: false),
                     IsLiked = table.Column<bool>(type: "boolean", nullable: false),
-                    ModificationDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    ModificationDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace RecipeBook.Migrations.Migrations
                     PortionsCount = table.Column<int>(type: "integer", nullable: false),
                     LikesCount = table.Column<int>(type: "integer", nullable: false),
                     FavoritesCount = table.Column<int>(type: "integer", nullable: false),
-                    CreationDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +57,7 @@ namespace RecipeBook.Migrations.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

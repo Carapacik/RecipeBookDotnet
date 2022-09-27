@@ -50,9 +50,9 @@ public class RecipeController : ControllerBase
 
     [HttpPost]
     [DisableRequestSizeLimit]
-    public async Task<IActionResult> AddRecipe([FromForm] CreateRecipeDto recipeDto, [FromForm] IFormFile file)
+    public async Task<IActionResult> AddRecipe([FromForm] CreateRecipeDto recipeDto)
     {
-        await _recipeService.AddRecipe(await ParseRecipeCommand(recipeDto, file));
+        await _recipeService.AddRecipe(await ParseRecipeCommand(recipeDto));
         return Ok();
     }
 
@@ -65,9 +65,9 @@ public class RecipeController : ControllerBase
 
     [HttpPatch("{id:int}/edit")]
     [DisableRequestSizeLimit]
-    public async Task<IActionResult> EditRecipe([FromForm] CreateRecipeDto recipeDto, [FromForm] IFormFile file, int id)
+    public async Task<IActionResult> EditRecipe([FromForm] CreateRecipeDto recipeDto, int id)
     {
-        await _recipeService.EditRecipe(await ParseRecipeCommand(recipeDto, file, id));
+        await _recipeService.EditRecipe(await ParseRecipeCommand(recipeDto, id));
         return Ok();
     }
 
@@ -87,10 +87,9 @@ public class RecipeController : ControllerBase
         return await _recipeBuilder.BuildRecipeDetail(recipe);
     }
 
-    private async Task<RecipeCommand> ParseRecipeCommand(CreateRecipeDto recipeData, IFormFile? formFile, int id = 0)
+    private async Task<RecipeCommand> ParseRecipeCommand(CreateRecipeDto recipeData, int id = 0)
     {
         recipeData.RecipeId = id;
-        return recipeData.FromDto(await FormFileAdapter.Create(formFile),
-            HttpContext.User.FindFirstValue(ClaimTypes.Email));
+        return await recipeData.FromDtoAsync(HttpContext.User.FindFirstValue(ClaimTypes.Email));
     }
 }

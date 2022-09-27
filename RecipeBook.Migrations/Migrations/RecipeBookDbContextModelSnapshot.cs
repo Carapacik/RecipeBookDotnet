@@ -81,7 +81,7 @@ namespace RecipeBook.Migrations.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ModificationDateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("RecipeId", "UserId");
 
@@ -100,7 +100,7 @@ namespace RecipeBook.Migrations.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -188,7 +188,7 @@ namespace RecipeBook.Migrations.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
