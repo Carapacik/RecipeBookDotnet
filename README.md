@@ -4,7 +4,7 @@
 
 In **docker-compose.yml** change default value of `FILE_STORAGE` for file strorage and `CONNECTION_STRING` for connection to db.
 
-Run `docker-compose up -d`
+Run `docker-compose up`
 
 ## Run with IDE
 
@@ -14,4 +14,4 @@ In **RecipeBook.WebApi/appsettings.json** and on **RecipeBook.Migrations/appsett
 
 Run `dotnet ef database update` from terminal in **RecipeBook.Migrations**.
 
-Run project.
+Run **RecipeBook.WebApi** project.
