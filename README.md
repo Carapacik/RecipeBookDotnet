@@ -2,9 +2,9 @@
 
 ## Run with Docker
 
-In **docker-compose.yml** change default value of `FILE_STORAGE` for file strorage.
+In **docker-compose.yml** change default value of `FILE_STORAGE` for file strorage and `CONNECTION_STRING` for connection to db.
 
-Run `docker-compose up`
+Run `docker-compose up -d`
 
 ## Run with IDE
 

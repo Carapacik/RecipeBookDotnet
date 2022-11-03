@@ -12,11 +12,13 @@ public class DbContextFactory : IDesignTimeDbContextFactory<RecipeBookDbContext>
         var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", true)
             .AddEnvironmentVariables()
+            .AddEnvironmentVariables("CONNECTION_STRING")
             .Build();
 
-        var optionsBuilder = new DbContextOptionsBuilder<RecipeBookDbContext>();
+        var connectionStringEnv = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("ConnectionString"), b =>
+        var optionsBuilder = new DbContextOptionsBuilder<RecipeBookDbContext>();
+        optionsBuilder.UseNpgsql(connectionStringEnv ?? configuration.GetConnectionString("ConnectionString"), b =>
         {
             b.MigrationsAssembly("RecipeBook.Migrations");
             b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);

@@ -8,6 +8,7 @@ public class RecipeBookDbContext : DbContext
 {
     public RecipeBookDbContext(DbContextOptions<RecipeBookDbContext> options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public DbSet<Ingredient>? Ingredients { get; set; }

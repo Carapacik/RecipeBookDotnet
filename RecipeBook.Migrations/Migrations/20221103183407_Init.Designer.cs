@@ -12,14 +12,14 @@ using RecipeBook.Infrastructure;
 namespace RecipeBook.Migrations.Migrations
 {
     [DbContext(typeof(RecipeBookDbContext))]
-    [Migration("20220927083859_Init")]
+    [Migration("20221103183407_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -83,7 +83,7 @@ namespace RecipeBook.Migrations.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ModificationDateTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("RecipeId", "UserId");
 
@@ -102,7 +102,7 @@ namespace RecipeBook.Migrations.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDateTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -190,7 +190,7 @@ namespace RecipeBook.Migrations.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()

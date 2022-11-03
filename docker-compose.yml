@@ -1,28 +1,29 @@
 ﻿version: "3.9"
 services:
-  recipe-book-pg:
-    image: postgres
+  recipe-pg:
+    image: postgres:15-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: 12345
       POSTGRES_USER: postgres
     networks:
-      - recipe-book-connection
+      - recipe-connection
     ports:
       - "5432:5432"
-  recipe-book-api:
-    container_name: recipe-book-api
+  recipe-api:
+    container_name: recipeapi
     build:
       context: ..
       dockerfile: ./RecipeBookDotnet/RecipeBook.WebApi/Dockerfile
     environment:
       FILE_STORAGE: ${FILE_STORAGE:-"D:\recipebook-static"}
+      CONNECTION_STRING: ${CONNECTION_STRING:-"Server=host.docker.internal;Port=5432;Database=recipe-pg;UID=postgres;PWD=12345;"}
     depends_on:
-      - recipe-book-pg
+      - recipe-pg
     networks:
-      - recipe-book-connection
+      - recipe-connection
     ports:
       - "8080:80"
-    command: ["dotnet", "ef", "database update"]
+    command: [ "dotnet", "ef", "database update" ]
 networks:
-  recipe-book-connection:
+  recipe-connection:
