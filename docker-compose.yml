@@ -1,7 +1,7 @@
 ﻿version: "3.9"
 services:
   recipe-pg:
-    image: postgres:15-alpine
+    image: postgres:15.1-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: 12345
@@ -9,14 +9,14 @@ services:
     networks:
       - recipe-connection
     ports:
-      - "5432:5432"
+      - "5433:5432"
   recipe-api:
     build:
       context: ..
       dockerfile: ./RecipeBookDotnet/RecipeBook.WebApi/Dockerfile
     environment:
-      FILE_STORAGE: ${FILE_STORAGE:-"D:\recipebook-static"}
-      CONNECTION_STRING: ${CONNECTION_STRING:-"Server=host.docker.internal;Port=5432;Database=recipe-pg;UID=postgres;PWD=12345;"}
+      FILE_STORAGE: ${FILE_STORAGE:-"recipebook-static"}
+      CONNECTION_STRING: ${CONNECTION_STRING:-"Server=host.docker.internal;Port=5433;Database=recipe-pg;UID=postgres;PWD=12345;"}
     depends_on:
       - recipe-pg
     networks:

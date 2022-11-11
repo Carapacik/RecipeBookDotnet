@@ -18,6 +18,9 @@ if (fileStorageEnv == null)
 else
     builder.Services.AddSingleton(builder.Configuration.Get<FileStorageSettings>().BasePath = fileStorageEnv);
 
+var staticStorageDirectory = new DirectoryInfo(builder.Configuration.Get<FileStorageSettings>().BasePath);
+if (!staticStorageDirectory.Exists) staticStorageDirectory.Create();
+
 builder.Services.AddDependencies();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
