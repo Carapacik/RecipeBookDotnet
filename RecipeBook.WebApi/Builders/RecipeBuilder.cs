@@ -24,7 +24,7 @@ public class RecipeBuilder
     public async Task<DetailRecipeDto> BuildRecipeDetail(Recipe recipe)
     {
         var claimsEmail = ClaimsEmail();
-        if (claimsEmail == null)
+        if (claimsEmail is null)
             throw new Exception("Invalid user.");
         var rating = await GetRating(claimsEmail, recipe.RecipeId);
         var author = await _userRepository.GetById(recipe.UserId);
@@ -40,11 +40,11 @@ public class RecipeBuilder
         Dictionary<int, Rating> ratingByRecipeId = new();
         Rating? rating;
         var claimsEmail = ClaimsEmail();
-        if (claimsEmail != null)
+        if (claimsEmail is not null)
         {
             var recipeIds = recipes.Select(x => x.RecipeId).Distinct().ToList();
             var user = await _userRepository.GetByEmail(claimsEmail);
-            if (user == null)
+            if (user is null)
                 throw new Exception("User not found.");
             var ratings = await _ratingRepository.Get(user.UserId, recipeIds);
             ratingByRecipeId = ratings.ToDictionary(x => x.RecipeId);
@@ -62,7 +62,7 @@ public class RecipeBuilder
     {
         var user = await _userRepository.GetByEmail(email);
         Rating? rating = null;
-        if (user != null)
+        if (user is not null)
             rating = await _ratingRepository.Get(user.UserId, recipeId);
 
         return rating;

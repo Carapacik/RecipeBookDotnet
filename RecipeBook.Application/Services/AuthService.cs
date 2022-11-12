@@ -30,7 +30,7 @@ public class AuthService : IAuthService
     public async Task<string> Login(UserCommand userCommand)
     {
         var user = await _userRepository.GetByEmail(userCommand.Email);
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
 
         if (!PasswordExtension.VerifyPasswordHash(userCommand.Password, user.PasswordHash, user.PasswordSalt))
             throw new Exception("Wrong password.");
@@ -43,7 +43,7 @@ public class AuthService : IAuthService
     public async Task<string> Register(RegisterUserCommand registerUserCommand)
     {
         var user = await _userRepository.GetByEmail(registerUserCommand.Email);
-        if (user != null) throw new Exception("User already exist.");
+        if (user is not null) throw new Exception("User already exist.");
 
         PasswordExtension.CreatePasswordHash(registerUserCommand.Password, out var passwordHash, out var passwordSalt);
         await _userRepository.CreateUser(new User
@@ -69,9 +69,9 @@ public class AuthService : IAuthService
         if (isAuthenticatedUser ?? true) throw new Exception("Invalid user.");
 
         var claimsEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-        if (claimsEmail == null) throw new Exception("Invalid user.");
+        if (claimsEmail is null) throw new Exception("Invalid user.");
 
         var user = await _userRepository.GetByEmail(claimsEmail);
-        if (user == null) throw new Exception("Invalid user.");
+        if (user is null) throw new Exception("Invalid user.");
     }
 }

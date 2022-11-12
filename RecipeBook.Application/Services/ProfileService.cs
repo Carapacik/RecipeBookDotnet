@@ -33,7 +33,7 @@ public class ProfileService : IProfileService
     {
         var claimsEmail = ClaimsEmail();
         var user = await _userRepository.GetByEmail(claimsEmail);
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
         var favoritesCount = await _ratingRepository.GetUserFavoritesCountByUserId(user.UserId);
         var likesCount = await _ratingRepository.GetUserLikesCountByUserId(user.UserId);
         var recipesCount = await _recipeRepository.GetUserRecipesCountByUserId(user.UserId);
@@ -51,7 +51,7 @@ public class ProfileService : IProfileService
     {
         var claimsEmail = ClaimsEmail();
         var existingUser = await _userRepository.GetByEmail(claimsEmail);
-        if (existingUser == null) throw new Exception($"User with email [{claimsEmail}] does not exist.");
+        if (existingUser is null) throw new Exception($"User with email [{claimsEmail}] does not exist.");
 
         var editedUser = ConvertToUser(editProfileCommand);
         await _userRepository.UpdateUser(existingUser, editedUser);
@@ -73,7 +73,7 @@ public class ProfileService : IProfileService
     private string ClaimsEmail()
     {
         var email = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-        if (email == null) throw new Exception("Invalid user.");
+        if (email is null) throw new Exception("Invalid user.");
         return email;
     }
 }

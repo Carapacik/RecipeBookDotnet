@@ -30,13 +30,13 @@ public class RatingService : IRatingService
     public async Task AddToFavorites(int recipeId)
     {
         var recipe = await _recipeRepository.GetById(recipeId);
-        if (recipe == null) throw new Exception($"Recipe with id [{recipeId}] does not exist");
+        if (recipe is null) throw new Exception($"Recipe with id [{recipeId}] does not exist");
 
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
 
         var rating = await _ratingRepository.Get(user.UserId, recipeId);
-        if (rating == null)
+        if (rating is null)
         {
             rating = new Rating
             {
@@ -62,10 +62,10 @@ public class RatingService : IRatingService
     public async Task RemoveFromFavorites(int recipeId)
     {
         var recipe = await _recipeRepository.GetById(recipeId);
-        if (recipe == null) throw new ArgumentException($"Recipe with id:{recipeId} does not exist");
+        if (recipe is null) throw new ArgumentException($"Recipe with id:{recipeId} does not exist");
 
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
 
         var rating = await _ratingRepository.Get(user.UserId, recipeId);
         if (rating is not {InFavorite: true}) return;
@@ -79,12 +79,12 @@ public class RatingService : IRatingService
     public async Task AddToLikes(int recipeId)
     {
         var recipe = await _recipeRepository.GetById(recipeId);
-        if (recipe == null) throw new ArgumentException($"Recipe with id [{recipeId}] does not exist");
+        if (recipe is null) throw new ArgumentException($"Recipe with id [{recipeId}] does not exist");
 
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
         var rating = await _ratingRepository.Get(user.UserId, recipeId);
-        if (rating == null)
+        if (rating is null)
         {
             rating = new Rating
             {
@@ -104,10 +104,10 @@ public class RatingService : IRatingService
     public async Task RemoveFromLikes(int recipeId)
     {
         var recipe = await _recipeRepository.GetById(recipeId);
-        if (recipe == null) throw new ArgumentException($"Recipe with id [{recipeId}] does not exist");
+        if (recipe is null) throw new ArgumentException($"Recipe with id [{recipeId}] does not exist");
 
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null) throw new Exception("User not found.");
+        if (user is null) throw new Exception("User not found.");
         var rating = await _ratingRepository.Get(user.UserId, recipeId);
         if (rating is not {IsLiked: true}) return;
 
@@ -119,7 +119,7 @@ public class RatingService : IRatingService
     private string ClaimsEmail()
     {
         var email = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-        if (email == null) throw new Exception("Invalid user.");
+        if (email is null) throw new Exception("Invalid user.");
         return email;
     }
 }

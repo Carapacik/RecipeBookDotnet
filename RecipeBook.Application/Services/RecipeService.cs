@@ -36,7 +36,7 @@ public class RecipeService : IRecipeService
     public async Task<DailyRecipeCommand?> GetRecipeOfDay()
     {
         var recipe = await _recipeRepository.GetRecipeOfDay();
-        if (recipe == null) throw new Exception("Daily recipe does not exist.");
+        if (recipe is null) throw new Exception("Daily recipe does not exist.");
         var author = await _userRepository.GetById(recipe.UserId);
         return new DailyRecipeCommand
         {
@@ -53,10 +53,10 @@ public class RecipeService : IRecipeService
     public async Task<int> AddRecipe(RecipeCommand command)
     {
         var filePath = await _fileStorageService.SaveFile(command.StorageFile, "images");
-        if (filePath == null)
+        if (filePath is null)
             throw new Exception("File in request not found.");
         var user = await _userRepository.GetByEmail(command.Email);
-        if (user == null)
+        if (user is null)
             throw new Exception("User not found.");
         var recipe = ConvertToRecipe(command, filePath, user.UserId);
         await _recipeRepository.Add(recipe);
@@ -67,10 +67,10 @@ public class RecipeService : IRecipeService
     public async Task DeleteRecipe(int id)
     {
         var recipe = await _recipeRepository.GetById(id);
-        if (recipe == null) throw new ValidationException($"Recipe with id:{id} does not exist");
+        if (recipe is null) throw new ValidationException($"Recipe with id:{id} does not exist");
 
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null)
+        if (user is null)
             throw new Exception("User not found.");
         if (user.UserId != recipe.UserId)
             throw new Exception("Incorrect user");
@@ -83,19 +83,19 @@ public class RecipeService : IRecipeService
     public async Task EditRecipe(RecipeCommand editCommand)
     {
         var existingRecipe = await _recipeRepository.GetById(editCommand.RecipeId);
-        if (existingRecipe == null)
+        if (existingRecipe is null)
             throw new Exception($"Recipe with id [{editCommand.RecipeId}] does not exist");
 
         var user = await _userRepository.GetByEmail(editCommand.Email);
-        if (user == null)
+        if (user is null)
             throw new Exception("User not found.");
         if (user.UserId != existingRecipe.UserId) throw new Exception("Incorrect user");
 
         SaveFileResultCommand? filePath = null;
-        if (editCommand.StorageFile != null)
+        if (editCommand.StorageFile is not null)
             filePath = await _fileStorageService.SaveFile(editCommand.StorageFile, "images");
 
-        if (filePath != null)
+        if (filePath is not null)
             await _fileStorageService.RemoveFile("images", existingRecipe.ImageUrl);
 
         var editedRecipe = ConvertToRecipe(editCommand, filePath!, user.UserId);
@@ -117,7 +117,7 @@ public class RecipeService : IRecipeService
     public async Task<IReadOnlyList<Recipe>> GetFavoriteRecipes(int skip, int take)
     {
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null)
+        if (user is null)
             throw new Exception("User not found.");
         var ratings = await _ratingRepository.GetInFavoriteByUserId(user.UserId);
         var recipeIds = ratings.Select(x => x.RecipeId).ToList();
@@ -127,7 +127,7 @@ public class RecipeService : IRecipeService
     public async Task<IReadOnlyList<Recipe>> GetUserOwnedRecipes(int skip, int take)
     {
         var user = await _userRepository.GetByEmail(ClaimsEmail());
-        if (user == null)
+        if (user is null)
             throw new Exception("User not found.");
         var recipes = await _recipeRepository.GetInUserOwnedByUserId(user.UserId);
         var recipeIds = recipes.Select(x => x.RecipeId).ToList();
@@ -155,7 +155,7 @@ public class RecipeService : IRecipeService
     private string ClaimsEmail()
     {
         var email = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-        if (email == null) throw new Exception("Invalid user.");
+        if (email is null) throw new Exception("Invalid user.");
         return email;
     }
 }

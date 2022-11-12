@@ -13,19 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Configuration.AddEnvironmentVariables("FILE_STORAGE").AddEnvironmentVariables("CONNECTION_STRING");
 var fileStorageEnv = Environment.GetEnvironmentVariable("FILE_STORAGE")?.Trim('"');
-string staticStorageDirectoryPath;
-if (fileStorageEnv is null)
-{
-    staticStorageDirectoryPath = builder.Configuration.GetSection("FileStorageSettings:BasePath").Value;
-    builder.Services.AddSingleton(builder.Configuration.GetSection("FileStorageSettings").Get<FileStorageSettings>());
-}
-else
-{
-    staticStorageDirectoryPath = fileStorageEnv;
-    builder.Services.AddSingleton(builder.Configuration.Get<FileStorageSettings>().BasePath = fileStorageEnv);
-}
+var staticStorageDirectoryPath =
+    fileStorageEnv ?? builder.Configuration.GetSection("FileStorageSettings:BasePath").Value;
+builder.Services.AddSingleton(new FileStorageSettings(staticStorageDirectoryPath));
 
-var staticStorageDirectory = new DirectoryInfo(staticStorageDirectoryPath + "\\images");
+var staticStorageDirectory = new DirectoryInfo($"{staticStorageDirectoryPath}\\images");
 if (!staticStorageDirectory.Exists) staticStorageDirectory.Create();
 
 builder.Services.AddDependencies();

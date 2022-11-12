@@ -27,8 +27,8 @@ public static class CreateRecipeAdapter
 
     private static FileResultCommand? ConvertToStorageFile(this FormFileAdapter? fileAdapter)
     {
-        return fileAdapter == null
+        return fileAdapter is null
             ? null
-            : new FileResultCommand {Content = fileAdapter.Data, Extension = fileAdapter.FileExtension};
+            : new FileResultCommand(fileAdapter.Data, fileAdapter.FileExtension);
     }
 }

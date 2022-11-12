@@ -21,8 +21,6 @@ public class StorageController : ControllerBase
         if (filePath.Contains('\\')) return BadRequest();
 
         var result = await _fileStorageService.GetFile($"images\\{filePath}");
-        if (result.Extension == null) return BadRequest();
-
         return new FileContentResult(result.Content, $"image/{result.Extension}");
     }
 }

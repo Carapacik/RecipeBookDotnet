@@ -23,7 +23,7 @@ public class ProfileController : Controller
     public async Task<ActionResult<ProfileDto>> Profile()
     {
         var profile = await _profileService.GetProfile();
-        if (profile == null) return BadRequest("Profile not found.");
+        if (profile is null) return BadRequest("Profile not found.");
         return Ok(profile.ToDto());
     }
 

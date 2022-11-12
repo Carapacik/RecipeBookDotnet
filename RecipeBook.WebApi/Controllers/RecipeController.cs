@@ -37,7 +37,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<DailyRecipeDto>> GetRecipeOfDay()
     {
         var recipe = await _recipeService.GetRecipeOfDay();
-        if (recipe == null) return BadRequest("Recipe of day does not exist");
+        if (recipe is null) return BadRequest("Recipe of day does not exist");
         return Ok(recipe.ToDto());
     }
 
@@ -83,7 +83,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<DetailRecipeDto>> GetDetailRecipe(int id)
     {
         var recipe = await _recipeService.GetDetailRecipe(id);
-        if (recipe == null) return BadRequest($"Recipe with id [{id}] does not exist");
+        if (recipe is null) return BadRequest($"Recipe with id [{id}] does not exist");
         return await _recipeBuilder.BuildRecipeDetail(recipe);
     }
 

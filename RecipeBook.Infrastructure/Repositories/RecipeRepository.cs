@@ -21,7 +21,7 @@ public class RecipeRepository : IRecipeRepository
     public async Task Delete(int id)
     {
         var recipe = await GetById(id);
-        if (recipe == null) throw new Exception("User not found.");
+        if (recipe is null) throw new Exception("User not found.");
         _context.Recipes!.Remove(recipe);
     }
 
@@ -51,7 +51,7 @@ public class RecipeRepository : IRecipeRepository
             .Where(x => x.CreationDateTime > window)
             .OrderByDescending(x => x.LikesCount)
             .FirstOrDefaultAsync();
-        if (recipeWithMoreLikesInLastDay != null) return recipeWithMoreLikesInLastDay;
+        if (recipeWithMoreLikesInLastDay is not null) return recipeWithMoreLikesInLastDay;
 
         var recipeWithMostLikes = await GetQuery().OrderByDescending(x => x.LikesCount)
             .FirstOrDefaultAsync();

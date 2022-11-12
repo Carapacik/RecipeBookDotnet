@@ -2,6 +2,12 @@
 
 public class FileResultCommand
 {
-    public byte[] Content { get; set; }
-    public string? Extension { get; set; }
+    public FileResultCommand(byte[] content, string extension)
+    {
+        Content = content;
+        Extension = extension;
+    }
+
+    public byte[] Content { get; init; }
+    public string Extension { get; init; }
 }

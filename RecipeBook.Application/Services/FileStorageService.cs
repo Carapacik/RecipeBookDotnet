@@ -14,11 +14,9 @@ public class FileStorageService : IFileStorageService
 
     public async Task<FileResultCommand> GetFile(string path)
     {
-        return new FileResultCommand
-        {
-            Content = await File.ReadAllBytesAsync($"{_fileStorageSettings.BasePath}\\{path}"),
-            Extension = path.Split('.').LastOrDefault()
-        };
+        return new FileResultCommand(
+            await File.ReadAllBytesAsync($"{_fileStorageSettings.BasePath}\\{path}"),
+            path.Split('.').Last());
     }
 
     public Task RemoveFile(string path, string fileName)
@@ -29,7 +27,7 @@ public class FileStorageService : IFileStorageService
 
     public async Task<SaveFileResultCommand?> SaveFile(FileResultCommand? file, string path)
     {
-        if (file == null) return null;
+        if (file is null) return null;
         var fileName = $"{Guid.NewGuid().ToString()}.{file.Extension}";
         var newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
         await File.WriteAllBytesAsync(newFilePath, file.Content);

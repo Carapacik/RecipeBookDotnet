@@ -13,7 +13,7 @@ public class FormFileAdapter
 
     public static async Task<FormFileAdapter?> Create(IFormFile? formFile)
     {
-        if (formFile == null) return null;
+        if (formFile is null) return null;
 
         byte[] bytes;
         await using (MemoryStream memoryStream = new())
