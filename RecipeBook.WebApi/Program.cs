@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Configuration.AddEnvironmentVariables("FILE_STORAGE").AddEnvironmentVariables("CONNECTION_STRING");
-var fileStorageEnv = Environment.GetEnvironmentVariable("FILE_STORAGE");
+var fileStorageEnv = Environment.GetEnvironmentVariable("FILE_STORAGE")?.Trim('"');
 string staticStorageDirectoryPath;
 if (fileStorageEnv is null)
 {
@@ -32,7 +32,7 @@ builder.Services.AddDependencies();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 
-var connectionStringEnv = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+var connectionStringEnv = Environment.GetEnvironmentVariable("CONNECTION_STRING")?.Trim('"');
 builder.Services.AddDbContext<RecipeBookDbContext>(options => options.UseNpgsql(
     connectionStringEnv ?? builder.Configuration.GetConnectionString("ConnectionString"), b =>
     {
