@@ -13,5 +13,5 @@ public class RecipeDto
     public string? AuthorName { get; set; }
     public bool IsLiked { get; set; }
     public bool IsFavorite { get; set; }
-    public List<string> Tags { get; set; }
+    public List<string> Tags { get; set; } = new();
 }

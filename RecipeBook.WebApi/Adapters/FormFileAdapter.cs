@@ -2,8 +2,14 @@
 
 public class FormFileAdapter
 {
-    public byte[] Data { get; private set; }
-    public string FileExtension { get; private set; }
+    private FormFileAdapter(string fileExtension, byte[] data)
+    {
+        FileExtension = fileExtension;
+        Data = data;
+    }
+
+    public byte[] Data { get; }
+    public string FileExtension { get; }
 
     public static async Task<FormFileAdapter?> Create(IFormFile? formFile)
     {
@@ -19,6 +25,6 @@ public class FormFileAdapter
             }
         }
 
-        return new FormFileAdapter {FileExtension = formFile.FileName.Split('.').Last(), Data = bytes};
+        return new FormFileAdapter(formFile.FileName.Split('.').Last(), bytes);
     }
 }

@@ -9,6 +9,6 @@ public class CreateRecipeDto
     public int PortionsCount { get; set; }
     public List<string> Tags { get; set; } = new();
     public List<string> Steps { get; set; } = new();
-    public IFormFile RecipeImage { get; set; }
+    public IFormFile? RecipeImage { get; set; }
     public List<IngredientDto> Ingredients { get; set; } = new();
 }

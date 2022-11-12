@@ -3,5 +3,5 @@
 public class IngredientDto
 {
     public string Title { get; set; } = string.Empty;
-    public List<string> IngredientNames { get; set; }
+    public List<string> IngredientNames { get; set; } = new();
 }
