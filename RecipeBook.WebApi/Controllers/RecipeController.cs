@@ -26,7 +26,7 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<List<RecipeDto>> GetAllRecipes(int skip, int take, string searchQuery)
+    public async Task<List<RecipeDto>> GetAllRecipes(int skip, int take, string? searchQuery)
     {
         var recipes = await _recipeService.GetAllRecipes(skip, take, searchQuery);
         return await _recipeBuilder.BuildRecipes(recipes);

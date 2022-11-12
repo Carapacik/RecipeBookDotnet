@@ -11,6 +11,6 @@ public interface IRecipeService
     Task<IReadOnlyList<Recipe>> GetFavoriteRecipes(int skip, int take);
     Task<IReadOnlyList<Recipe>> GetUserOwnedRecipes(int skip, int take);
     Task<DailyRecipeCommand?> GetRecipeOfDay();
-    Task<IReadOnlyList<Recipe>> GetAllRecipes(int skip, int take, string searchQuery);
+    Task<IReadOnlyList<Recipe>> GetAllRecipes(int skip, int take, string? searchQuery);
     Task<Recipe?> GetDetailRecipe(int id);
 }

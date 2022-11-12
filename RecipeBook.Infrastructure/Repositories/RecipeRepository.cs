@@ -81,7 +81,7 @@ public class RecipeRepository : IRecipeRepository
             .ToListAsync();
     }
 
-    public async Task<IReadOnlyList<Recipe>> Search(int skip, int take, string searchQuery)
+    public async Task<IReadOnlyList<Recipe>> Search(int skip, int take, string? searchQuery)
     {
         var query = GetQuery();
         if (!string.IsNullOrWhiteSpace(searchQuery))

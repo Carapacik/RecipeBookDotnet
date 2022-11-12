@@ -13,12 +13,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Configuration.AddEnvironmentVariables("FILE_STORAGE").AddEnvironmentVariables("CONNECTION_STRING");
 var fileStorageEnv = Environment.GetEnvironmentVariable("FILE_STORAGE");
-if (fileStorageEnv == null)
+string staticStorageDirectoryPath;
+if (fileStorageEnv is null)
+{
+    staticStorageDirectoryPath = builder.Configuration.GetSection("FileStorageSettings:BasePath").Value;
     builder.Services.AddSingleton(builder.Configuration.GetSection("FileStorageSettings").Get<FileStorageSettings>());
+}
 else
+{
+    staticStorageDirectoryPath = fileStorageEnv;
     builder.Services.AddSingleton(builder.Configuration.Get<FileStorageSettings>().BasePath = fileStorageEnv);
+}
 
-var staticStorageDirectory = new DirectoryInfo(builder.Configuration.Get<FileStorageSettings>().BasePath);
+var staticStorageDirectory = new DirectoryInfo(staticStorageDirectoryPath + "\\images");
 if (!staticStorageDirectory.Exists) staticStorageDirectory.Create();
 
 builder.Services.AddDependencies();
@@ -63,6 +70,12 @@ builder.Services.AddCors(options =>
         policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<RecipeBookDbContext>();
+    dataContext.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

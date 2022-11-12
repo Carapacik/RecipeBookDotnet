@@ -12,5 +12,5 @@ public interface IRecipeRepository
     Task<IReadOnlyList<Recipe>> GetInUserOwnedByUserId(int userId);
     Task<int> GetUserRecipesCountByUserId(int userId);
     Task<IReadOnlyList<Recipe>> Search(int skip, int take, IEnumerable<int> recipeIds);
-    Task<IReadOnlyList<Recipe>> Search(int skip, int take, string searchQuery);
+    Task<IReadOnlyList<Recipe>> Search(int skip, int take, string? searchQuery);
 }

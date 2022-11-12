@@ -23,6 +23,5 @@ services:
       - recipe-connection
     ports:
       - "8080:80"
-    command: [ "dotnet", "ef", "database update" ]
 networks:
   recipe-connection:

@@ -104,7 +104,7 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Commit();
     }
 
-    public async Task<IReadOnlyList<Recipe>> GetAllRecipes(int skip, int take, string searchQuery)
+    public async Task<IReadOnlyList<Recipe>> GetAllRecipes(int skip, int take, string? searchQuery)
     {
         return await _recipeRepository.Search(skip, take, searchQuery);
     }
