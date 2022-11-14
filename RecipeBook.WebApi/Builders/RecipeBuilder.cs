@@ -23,10 +23,7 @@ public class RecipeBuilder
 
     public async Task<DetailRecipeDto> BuildRecipeDetail(Recipe recipe)
     {
-        var claimsEmail = ClaimsEmail();
-        if (claimsEmail is null)
-            throw new Exception("Invalid user.");
-        var rating = await GetRating(claimsEmail, recipe.RecipeId);
+        var rating = await GetRating(ClaimsEmail(), recipe.RecipeId);
         var author = await _userRepository.GetById(recipe.UserId);
         return recipe.ToDetailDto(rating, author?.Name);
     }
@@ -58,8 +55,10 @@ public class RecipeBuilder
         }).ToList();
     }
 
-    private async Task<Rating?> GetRating(string email, int recipeId)
+    private async Task<Rating?> GetRating(string? email, int recipeId)
     {
+        if (email is null) return null;
+
         var user = await _userRepository.GetByEmail(email);
         Rating? rating = null;
         if (user is not null)
